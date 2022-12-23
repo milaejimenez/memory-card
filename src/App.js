@@ -1,75 +1,80 @@
-import { useState} from 'react'
+import { useState } from 'react'
 import './App.css';
 
 function App() {
 
-  const[currentScore, setCurrentScore] = useState(0)
-  // const[bestScore, setBestScore] = useState(0)
-  const[images, setImages] = useState([
-    {url:'./imgs/00_Fool.jpeg',
-    id:1,
-    clicked:false},
-    {url:'./imgs/01_Magician.jpeg',
-    id:2,
-    clicked:false},
-    {url:'./imgs/02_High_Priestess.jpeg',
-    id:3,
-    clicked:false},
-    {url:'./imgs/03_Empress.jpeg',
-    id:4,
-    clicked:false},
-    {url:'./imgs/04_Emperor.jpeg',
-    id:5,
-    clicked:false},
-    {url:'./imgs/05_Hierophant.jpeg',
-    id:6,
-    clicked:false},
-    {url:'./imgs/06_TheLovers.jpeg',
-    id:7,
-    clicked:false},
-    {url:'./imgs/07_Chariot.jpeg',
-    id:8,
-    clicked:false},
-    {url:'./imgs/09_Hermit.jpeg',
-    id:9,
-    clicked:false},
-    {url:'./imgs/10_Wheel_Of_Fortune.jpeg',
-    id:10,
-    clicked:false},
-  ])
+  const[score, setScore] = useState(0)
+  const[highestScore, setHighestScore] = useState(0)
+  const[cards, setCards] = useState([])
 
-  const setToClicked = id => {
-    images.forEach( image => {
-      if (image.id == id ) {
-        const values = [...images]
-        const index = image.id -1
-        values[index].clicked = true;
-        setImages(values)
-        // console.log(image.clicked)
-      }
+  const images = [
+    {name: 'fool',
+    src:'./imgs/00_Fool.jpeg',
+    id:1},
+    {name: 'magician',
+    src:'./imgs/01_Magician.jpeg',
+    id:2},
+    {name: 'priestess',
+    src:'./imgs/02_High_Priestess.jpeg',
+    id:3},
+    {name: 'empress',
+    src:'./imgs/03_Empress.jpeg',
+    id:4},
+    {name: 'emperor',
+    src:'./imgs/04_Emperor.jpeg',
+    id:5},
+    {name: 'hyerophant',
+    src:'./imgs/05_Hierophant.jpeg',
+    id:6},
+    {name: 'lovers',
+    src:'./imgs/06_TheLovers.jpeg',
+    id:7},
+    {name: 'chariot',
+    src:'./imgs/07_Chariot.jpeg',
+    id:8},
+    {name: 'hermit',
+    src:'./imgs/09_Hermit.jpeg',
+    id:9},
+    {name: 'wheel',
+    src:'./imgs/10_Wheel_Of_Fortune.jpeg',
+    id:10},
+  ]
 
-    })
+  const incrementScore = () => {
+    setScore( prevScore => prevScore + 1)
   }
 
-  const handleSetScore = event => {
-    const id = event.target.id
-    images.forEach( image => {
-      if (image.id == id) {
-        console.log(image.clicked)
-        image.clicked ? setCurrentScore(0) : setCurrentScore(currentScore + 1)
-          }
-      })
-      setToClicked(id)
-      console.log(currentScore)
+  const reset = () => {
+    setScore(0);
+    setCards([])
   }
+
+  const addCard = (cardName) => {
+    setCards(prevCards => [...prevCards, cardName] )
+  }
+
+  const handleGameLogic = (event) => {
+    const cardName = event.target.id
+    if (!cards.includes(cardName)) {
+      console.log('not included')
+      incrementScore();
+      addCard(cardName);
+    } else {
+      console.log('included')
+      reset();
+    }
+  };
+
 
   return (
     <div className="App">
      <h1>Memory Card Game</h1>
+     <h2>Score: {score}</h2>
+     <h2>Highest Score: {highestScore}</h2>
 
-     {images.map( (image, index) => (
+     {images.map( (image) => (
       <div key={image.id} >
-        <img src={image.url} alt={image.url} id={image.id} width={300} onClick={ event => {handleSetScore(event)}}/>
+        <img src={image.src} alt={image.name} id={image.name} width={300} onClick={ (event) => handleGameLogic(event)} />
       </div>
      ))}
 
