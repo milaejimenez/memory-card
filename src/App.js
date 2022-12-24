@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css';
 
 const cardImages = [
@@ -47,20 +47,30 @@ function App() {
         .sort( (() => Math.random() - 0.5))
         .map((cardImage) => ({...cardImage}))
       setCards(shuffledCards)
-  }
+  };
+
+  useEffect(() => {
+    shuffleCards()
+  }, []);
 
   const incrementScore = () => {
-    setScore( prevScore => prevScore + 1)
-  }
+    setScore( prevScore => prevScore + 1);
+  };
+
+  useEffect(() => {
+    if (score >= highestScore) {
+      setHighestScore(score)
+    }
+  }, [score]);
 
   const reset = () => {
     setScore(0);
-    addClickedCard([])
-  }
+    setClickedCard([]);
+  };
 
   const addClickedCard = (cardName) => {
     setClickedCard(prevCards => [...prevCards, cardName] )
-  }
+  };
 
   const handleGameLogic = (event) => {
     const cardName = event.target.id
@@ -78,7 +88,6 @@ function App() {
   return (
     <div className="App">
      <h1>Memory Card Game</h1>
-     <button onClick={shuffleCards}>New Game</button>
      <h2>Score: {score}</h2>
      <h2>Highest Score: {highestScore}</h2>
 
