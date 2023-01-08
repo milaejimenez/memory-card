@@ -61,7 +61,7 @@ function App() {
     if (score >= highestScore) {
       setHighestScore(score)
     }
-  }, [score]);
+  }, [score, highestScore]);
 
   const reset = () => {
     setScore(0);
@@ -90,12 +90,13 @@ function App() {
      <h1>Memory Card Game</h1>
      <h2>Score: {score}</h2>
      <h2>Highest Score: {highestScore}</h2>
-
-     {cards.map( (card) => (
-      <div key={card.id} >
-        <img src={card.src} alt={card.name} id={card.name} width={300} onClick={ (event) => handleGameLogic(event)} />
-      </div>
-     ))}
+     <div className='cards'>
+        {cards.map( (card) => (
+        <div key={card.id}>
+          <img src={card.src} alt={card.name} id={card.name} width={200} onClick={ (event) => handleGameLogic(event)} />
+        </div>
+        ))}
+        </div>
 
     </div>
   )
